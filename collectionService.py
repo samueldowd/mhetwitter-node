@@ -3,13 +3,13 @@ import pymongo
 from dateutil.parser import *
 from dateutil.tz import *
 from datetime import *
-from alchemyapi import AlchemyAPI
+# from alchemyapi import AlchemyAPI
 
 # Command line command: mongo ds031877.mongolab.com:31877/heroku_app34284493 -u admin -p root
 
 client = pymongo.MongoClient('mongodb://admin:root@ds031877.mongolab.com:31877/heroku_app34284493')
 
-alchemyapi = AlchemyAPI()
+# alchemyapi = AlchemyAPI()
 
 db = client.heroku_app34284493
 
@@ -100,7 +100,7 @@ for tweet in twitter_search:
     "author_alias": "",
     "author_name": "",
     "text": "",
-    "tweet_sentiment": 0,
+    # "tweet_sentiment": 0,
     "parent": "",
     ## "mentions" is an array of the caliper IDs from the user_mentions objects array
     "user_mentions": [],
@@ -111,9 +111,9 @@ for tweet in twitter_search:
     user_id = tweet['user']['id_str']
     tweet_text = tweet['text']
     ## AlchemyAPI Sentiment Analysis
-    response = alchemyapi.sentiment('text', tweet_text)
-    if 'score' in response['docSentiment']:
-        tweet_sentiment_score = response['docSentiment']['score']
+    # response = alchemyapi.sentiment('text', tweet_text)
+    # if 'score' in response['docSentiment']:
+    #     tweet_sentiment_score = response['docSentiment']['score']
 
 
     tweet_id = tweet['id_str']
@@ -136,7 +136,7 @@ for tweet in twitter_search:
     caliper_tweet['object']['author_alias'] = tweet['user']['screen_name']
     caliper_tweet['object']['author_name'] = tweet['user']['name']
     caliper_tweet['object']['text'] = unicode(tweet['text'])
-    caliper_tweet['object']['tweet_sentiment'] = tweet_sentiment_score
+    # caliper_tweet['object']['tweet_sentiment'] = tweet_sentiment_score
 
     for x in list(tweet['entities']['hashtags']):
         hashtag = x['text']
@@ -151,7 +151,7 @@ for tweet in twitter_search:
     
     db_inserts = db_inserts + 1
 
-    print db_inserts + "were made."
+    print str(db_inserts) + "were made."
  
     # tweet_id = tweet['id_str']
     # twitter_id_list.append(tweet_id)
