@@ -1,0 +1,40 @@
+var todo = new Tweet({"object": {
+    "user_mentions": [
+      "86948180",
+      "2576387279",
+      "90961345"
+    ],
+    "tweet_id": "581711544712462336",
+    "hashtags": [],
+    "to": "NoReply",
+    "parent": "NoReply",
+    "subtype": "tweet",
+    "text": "McGraw-Hill Education is out! http://t.co/9XmwO5dRYy Stories via @McGrawHillK12 @angela1crouse @MHEducation",
+    "author": {
+      "author_uri": "https://twitter.com/intent/user?user_id=17464186",
+      "author_alias": "wildertalent",
+      "author_name": "Andy Little"
+    },
+    "_id": "https://twitter.com/wildertalent/status/581711544712462336",
+    "@type": "MessagingEvent"
+  },
+  "startedAtTime": {
+    "date": 1427525814000
+  },
+  "verb": "tweetSent",
+  "actor": "student:wildertalent",
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/MessagingEvent",
+  "id": {
+    "oid": "55201e500277f239f06a410e"
+  },
+  "@type": "MessagingEvent"
+});
+
+/* prompt> */ todo.save(function(err){
+    if(err)
+        console.log(err);
+    else
+        console.log(todo);
+});
+
+  

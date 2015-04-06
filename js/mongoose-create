@@ -1,0 +1,30 @@
+var caliperTweet= new tweetCreate({
+  "user_mentions": [
+    "90961345"
+  ],
+  "tweet_id": "581808062719270912",
+  "hashtags": [
+    "edchat",
+    "edtech"
+  ],
+  "to": "NoReply",
+  "parent": "NoReply",
+  "subtype": "tweet",
+  "text": "RT @MHEducation: New report | Adaptive Learning's Next Audience: Struggling K-12 Students: http://t.co/jpcnIicUQ9 #edchat #edtech http://t.…",
+  "author": {
+    "author_uri": "https://twitter.com/intent/user?user_id=213339721",
+    "author_alias": "itknowingness",
+    "author_name": "IT Knowingness"
+  },
+  "type": "MessagingEvent",
+  "id": "https://twitter.com/itknowingness/status/581808062719270912"
+});
+
+/* prompt> */ caliperTweet.save(function(err){
+    if(err)
+        console.log(err);
+    else
+        console.log(caliperTweet)
+});
+
+  

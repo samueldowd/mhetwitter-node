@@ -3,6 +3,10 @@ import pymongo
 from dateutil.parser import *
 from dateutil.tz import *
 from datetime import *
+import simplejson
+import bson
+from bson import json_util
+import json
 # from alchemyapi import AlchemyAPI
 
 # Command line command: mongo ds031877.mongolab.com:31877/heroku_app34284493 -u admin -p root
@@ -13,7 +17,7 @@ client = pymongo.MongoClient('mongodb://admin:root@ds031877.mongolab.com:31877/h
 
 db = client.heroku_app34284493
 
-tweets = db.tweets
+tweets = db.tweet_test
 
 count = tweets.count()
 print count
@@ -83,22 +87,24 @@ for tweet in twitter_search:
     hashtags_list = []
     tweet_id = ""
     caliper_tweet = {
-  "@context": "http://purl.imsglobal.org/ctx/caliper/v1/MessagingEvent",
-  "@type": "MessagingEvent",
+  "context": "http://purl.imsglobal.org/ctx/caliper/v1/MessagingEvent",
+  "type": "MessagingEvent",
   "startedAtTime": "",
   ## Can be used to query Twitter API for user information
   "actor": "",
   "verb": "tweetSent",
   "object": {
-    "@type": "MessagingEvent",
-    "@id": "",
+    "type": "MessagingEvent",
+    "id": "",
     "tweet_id": "",
     "subtype": "tweet",
     ## "to" should be calculated by checking in_reply_to_user_id_str is null. If it's not null, then it should be concatenated to "uri:twitter/user/" and stored in "object"['to']
     "to": "",
-    "author": "",
-    "author_alias": "",
-    "author_name": "",
+    "author": {
+        "author_uri": "",
+        "author_alias": "",
+        "author_name": "",
+        },
     "text": "",
     # "tweet_sentiment": 0,
     "parent": "",
@@ -121,7 +127,7 @@ for tweet in twitter_search:
     tweet_date = parse(ds)
     caliper_tweet['startedAtTime'] = tweet_date
     caliper_tweet['actor'] = 'student:' + tweet['user']['screen_name']
-    caliper_tweet['object']['@id'] = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet_id
+    caliper_tweet['object']['tweet_id'] = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet_id
     caliper_tweet['object']['tweet_id'] = tweet['id_str']
     if tweet['in_reply_to_user_id_str'] is None:
         caliper_tweet['object']['to'] = 'NoReply'
@@ -132,9 +138,9 @@ for tweet in twitter_search:
             caliper_tweet['object']['parent'] = 'None'
         else:    
             caliper_tweet['object']['parent'] = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['in_reply_to_status_id_str']
-    caliper_tweet['object']['author'] = 'https://twitter.com/intent/user?user_id=' + tweet['user']['id_str']
-    caliper_tweet['object']['author_alias'] = tweet['user']['screen_name']
-    caliper_tweet['object']['author_name'] = tweet['user']['name']
+    caliper_tweet['object']['author']['author_uri'] = 'https://twitter.com/intent/user?user_id=' + tweet['user']['id_str']
+    caliper_tweet['object']['author']['author_alias'] = tweet['user']['screen_name']
+    caliper_tweet['object']['author']['author_name'] = tweet['user']['name']
     caliper_tweet['object']['text'] = unicode(tweet['text'])
     # caliper_tweet['object']['tweet_sentiment'] = tweet_sentiment_score
 
@@ -152,6 +158,9 @@ for tweet in twitter_search:
     db_inserts = db_inserts + 1
 
     print str(db_inserts) + "were made."
+
+    with open('tweets.json', 'w') as outfile:
+        json.dump(caliper_tweet['object'], outfile, default=json_util.default)
  
     # tweet_id = tweet['id_str']
     # twitter_id_list.append(tweet_id)
